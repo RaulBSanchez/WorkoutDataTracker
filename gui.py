@@ -6,34 +6,12 @@ from mysql.connector import Error
 
 root = Tk()
 root.title("Work Out Data Tracker")
-root.geometry("200x200")
+root.geometry("400x200")
 
 
 
 
-"""
-try:
-    connection = mysql.connector.connect(host='localhost',
-                                         database='WorkOutData',
-                                         user='root',
-                                         password='')
-    if connection.is_connected():
-        db_Info = connection.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
-        cursor = connection.cursor()
-        cursor.execute("select database();")
-        record = cursor.fetchone()
-        print("You're connected to database: ", record)
 
-except Error as e:
-    print("Error while connecting to MySQL", e)
-finally:
-    if connection.is_connected():
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed")
-
-"""
 
 def get_connection():
 	connection = mysql.connector.connect (host='localhost',
@@ -47,30 +25,62 @@ def close_connection(connection):
 	if connection:
 		connection.close()
 
-def test_connection():
-	try:
-		connection = get_connection()
-		cursor = connection.cursor()
-		cursor.execute("SELECT version();")
-		db_version = cursor.fetchone()
-		print("SQL version ", db_version)
-		close_connection(connection)
-	except(Exception, mysql.connector.Error) as error:
-		print("Error", error)
+
 
 
 def excecute_query(action):
-	global records
+	#global records
 	command = action
-	if command == "Average":
+	if command == "Pace":
 		try: 
 			connection = get_connection()
 			cursor = connection.cursor()
 			select_query = """SELECT AVG(Pace) FROM WorkOutData.Running;"""
 			cursor.execute(select_query)
 			records = cursor.fetchone()
-			print(records)
-			return records
+			#print("This is datatype of records", type(records))
+			speed = str(records[0])
+			entry_speed = speed + " MPH"
+			entry.delete(0, END)
+			entry.insert(0, entry_speed)
+			#print(records)
+			return True
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+	elif command == "Calories":
+		try: 
+			connection = get_connection()
+			cursor = connection.cursor()
+			select_query = """SELECT SUM(Calories) FROM WorkOutData.Running;"""
+			cursor.execute(select_query)
+			records = cursor.fetchone()
+			#print("This is datatype of records", type(records))
+			total_calories = str(records[0])
+			entry_calories = total_calories + " Calories"
+			entry.delete(0, END)
+			entry.insert(0, entry_calories)
+			#print(records)
+			return True
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+	elif command == "Sum of Distance":
+		try: 
+			connection = get_connection()
+			cursor = connection.cursor()
+			select_query = """SELECT SUM(Distance) FROM WorkOutData.Running;"""
+			cursor.execute(select_query)
+			records = cursor.fetchone()
+			#print("This is datatype of records", type(records))
+			distance = str(records[0])
+			entry_distance = distance + " Miles"
+			entry.delete(0, END)
+			entry.insert(0, entry_distance)
+			#print(records)
+			return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -86,19 +96,21 @@ entry.insert(0, "Default Text")
 entry.grid(row = 0, column = 3)
 
 def query(value):
-	entry.delete(0, END)
-	entry.insert(0, value)
+	#entry.delete(0, END)
+	#entry.insert(0, value)
 	#test_connection()
 
 	action = value
-	print(action)
+	#print(type(action))
 
-	excecute_query("Average")
-	pace = excecute_query("Average")
-	print("this is the pace", pace)
+	if action == "Calories":
+		excecute_query("Calories")
+	elif action == "Sum of Distance":
+		excecute_query("Sum of Distance")
+	elif action == "Pace":
+		excecute_query("Pace")
 
-	#pace = self.excecute_query()
-	entry.insert(0, pace)
+
 
 
 
@@ -112,7 +124,7 @@ run_workout.grid(row =0, column = 0)
 
 
 #selection
-option = ["Average", "Sum of Distance", "Pace"]
+option = ["Calories", "Sum of Distance", "Pace"]
 
 dataPoint = StringVar()
 dataPoint.set(option[0])
@@ -131,3 +143,5 @@ run_query.grid(row = 0, column = 2)
 
 
 root.mainloop()
+
+
