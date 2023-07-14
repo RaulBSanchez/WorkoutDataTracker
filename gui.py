@@ -17,7 +17,7 @@ def get_connection():
 	connection = mysql.connector.connect (host='localhost',
                                          database='WorkOutData',
                                          user='root',
-                                         password='Catfish1030!')
+                                         password='')
 
 	return connection 
 
@@ -111,7 +111,7 @@ def query(value):
 
 
 
-
+#entries
 entry = Entry(root, width = 35)
 entry.insert(0, "Default Text")
 entry.grid(row = 0, column = 3)
