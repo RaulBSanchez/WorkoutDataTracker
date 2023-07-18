@@ -28,7 +28,7 @@ def close_connection(connection):
 
 
 
-def excecute_query(action):
+def runsql_query(action):
 	#global records
 	command = action
 	if command == "Pace":
@@ -89,11 +89,69 @@ def excecute_query(action):
 		print("sorry")
 
 
+def bikesql_query(action):
+	#global records
+	command = action
+	if command == "Pace":
+		try: 
+			connection = get_connection()
+			cursor = connection.cursor()
+			select_query = """SELECT AVG(Pace) FROM WorkOutData.Biking;"""
+			cursor.execute(select_query)
+			records = cursor.fetchone()
+			#print("This is datatype of records", type(records))
+			speed = str(records[0])
+			entry_speed = speed + " MPH"
+			entry_bike.delete(0, END)
+			entry_bike.insert(0, entry_speed)
+			#print(records)
+			return True
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+	elif command == "Calories":
+		try: 
+			connection = get_connection()
+			cursor = connection.cursor()
+			select_query = """SELECT SUM(Calories) FROM WorkOutData.Biking;"""
+			cursor.execute(select_query)
+			records = cursor.fetchone()
+			#print("This is datatype of records", type(records))
+			total_calories = str(records[0])
+			entry_calories = total_calories + " Calories"
+			entry_bike.delete(0, END)
+			entry_bike.insert(0, entry_calories)
+			#print(records)
+			return True
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+	elif command == "Sum of Distance":
+		try: 
+			connection = get_connection()
+			cursor = connection.cursor()
+			select_query = """SELECT SUM(Distance) FROM WorkOutData.Biking;"""
+			cursor.execute(select_query)
+			records = cursor.fetchone()
+			#print("This is datatype of records", type(records))
+			distance = str(records[0])
+			entry_distance = distance + " Miles"
+			entry_bike.delete(0, END)
+			entry_bike.insert(0, entry_distance)
+			#print(records)
+			return True
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+	else:
+		print("sorry")
 
 
 
-
-def query(value):
+def run(value):
 	#entry.delete(0, END)
 	#entry.insert(0, value)
 	#test_connection()
@@ -102,22 +160,35 @@ def query(value):
 	#print(type(action))
 
 	if action == "Calories":
-		excecute_query("Calories")
+		runsql_query("Calories")
 	elif action == "Sum of Distance":
-		excecute_query("Sum of Distance")
+		runsql_query("Sum of Distance")
 	elif action == "Pace":
-		excecute_query("Pace")
+		runsql_query("Pace")
 
+def bike(value):
+	#entry.delete(0, END)
+	#entry.insert(0, value)
+	#test_connection()
 
+	action = value
+	#print(type(action))
+
+	if action == "Calories":
+		bikesql_query("Calories")
+	elif action == "Sum of Distance":
+		bikesql_query("Sum of Distance")
+	elif action == "Pace":
+		bikesql_query("Pace")
 
 
 #entries
 entry = Entry(root, width = 35)
-entry.insert(0, "Default Text")
+entry.insert(0, "Running Data")
 entry.grid(row = 0, column = 3)
 
 entry_bike = Entry(root, width = 35)
-entry_bike.insert(0, "Default Text")
+entry_bike.insert(0, "Biking Data")
 entry_bike.grid(row = 1, column = 3)
 
 
@@ -135,6 +206,7 @@ option = ["Calories", "Sum of Distance", "Pace"]
 
 dataPoint_run = StringVar()
 dataPoint_run.set(option[0])
+print(dataPoint_run)
 
 dataPoint_bike = StringVar()
 dataPoint_bike.set(option[0])
@@ -146,10 +218,10 @@ drop_run.grid(row = 0, column = 1)
 drop_bike = OptionMenu(root, dataPoint_bike, *option)
 drop_bike.grid(row = 1, column = 1)
 
-run_query = Button(root, text = "Run Query", command = lambda: query(dataPoint_run.get()))
+run_query = Button(root, text = "Run Query", command = lambda: run(dataPoint_run.get()))
 run_query.grid(row = 0, column = 2)
 
-run_query_bike = Button(root, text = "Run Query", command = lambda: query(dataPoint_run.get()))
+run_query_bike = Button(root, text = "Run Query", command = lambda: bike(dataPoint_bike.get()))
 run_query_bike.grid(row = 1, column = 2)
 
 
