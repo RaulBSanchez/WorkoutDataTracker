@@ -21,9 +21,20 @@ def close_connection(connection):
 	if connection:
 		connection.close()
 
+def testGettingValues():
+	print("mthod was called")
+	date = b_date.get()
+	cals = b_calories.get()
+	pace = b_pace.get()
+	dis = b_distance.get()
+	heartRate = b_heartRate.get()
+	print("getting values")
+	print(date, cals, pace, dis, heartRate)
+
 
 #create submit function
 def submit():
+	testGettingValues()
 	command = "Run"
 	#try query
 	if command == "but":
