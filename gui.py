@@ -1,5 +1,4 @@
 from tkinter import *
-from PIL import ImageTk, Image
 import mysql.connector
 from mysql.connector import Error
 

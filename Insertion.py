@@ -5,7 +5,7 @@ from mysql.connector import Error
 
 root = Tk()
 root.title("Work Out Data Tracker")
-root.geometry("400x200")
+root.geometry("450x200")
 
 
 #create submit function
@@ -56,6 +56,14 @@ b_hearRate_label.grid(row = 4, column = 0)
 submit_button = Button(root, text = "Add Workout", command =submit)
 submit_button.grid(row = 6, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
 
+
+#dropdown button
+option = ['Biking', 'Running']
+workoutType = StringVar()
+workoutType.set(option[0])
+
+dropdown = OptionMenu(root, workoutType, *option)
+dropdown.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
 
 
 root.mainloop()
