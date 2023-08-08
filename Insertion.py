@@ -8,8 +8,42 @@ root.title("Work Out Data Tracker")
 root.geometry("450x200")
 
 
+#connections to database
+def get_connection():
+	connection = mysql.connector.connect (host='localhost',
+                                         database='WorkOutData',
+                                         user='root',
+                                         password='')
+
+	return connection 
+
+def close_connection(connection):
+	if connection:
+		connection.close()
+
+
 #create submit function
 def submit():
+	command = "Run"
+	#try query
+	if command == "but":
+		try:
+			connection = get_connection()
+			cursor = connection.cursor()
+			query = """SELECT AVG(Pace) FROM WorkOutData.Running;"""
+			cursor.execute(query)
+			records = cursor.fetchone()
+			print(records)
+
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+
+
+	else:
+		print("didnt work")
+
+
+
 	b_date.delete(0, END)
 	b_calories.delete(0, END)
 	b_pace.delete(0, END)

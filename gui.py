@@ -16,7 +16,7 @@ def get_connection():
 	connection = mysql.connector.connect (host='localhost',
                                          database='WorkOutData',
                                          user='root',
-                                         password='')
+                                         password='Catfish1030!')
 
 	return connection 
 
@@ -43,7 +43,7 @@ def runsql_query(action):
 			entry.delete(0, END)
 			entry.insert(0, entry_speed)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -61,7 +61,7 @@ def runsql_query(action):
 			entry.delete(0, END)
 			entry.insert(0, entry_calories)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -79,7 +79,7 @@ def runsql_query(action):
 			entry.delete(0, END)
 			entry.insert(0, entry_distance)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -104,7 +104,7 @@ def bikesql_query(action):
 			entry_bike.delete(0, END)
 			entry_bike.insert(0, entry_speed)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -122,7 +122,7 @@ def bikesql_query(action):
 			entry_bike.delete(0, END)
 			entry_bike.insert(0, entry_calories)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
@@ -140,7 +140,7 @@ def bikesql_query(action):
 			entry_bike.delete(0, END)
 			entry_bike.insert(0, entry_distance)
 			#print(records)
-			return True
+			#return True
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
