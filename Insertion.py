@@ -1,11 +1,11 @@
 from tkinter import *
 import mysql.connector
 from mysql.connector import Error
-
+import datetime
 
 root = Tk()
 root.title("Work Out Data Tracker")
-root.geometry("450x200")
+root.geometry("450x300")
 
 
 #connections to database
@@ -20,31 +20,52 @@ def get_connection():
 def close_connection(connection):
 	if connection:
 		connection.close()
-
+'''
 def testGettingValues():
-	print("mthod was called")
+	
+	text = workoutType.get()
+	
 	date = b_date.get()
+	#format = '%Y/%m/%d'
+	#print(type(date))
+	sqlDate = datetime.datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
+	
+
 	cals = b_calories.get()
 	pace = b_pace.get()
 	dis = b_distance.get()
 	heartRate = b_heartRate.get()
 	print("getting values")
-	print(date, cals, pace, dis, heartRate)
-
+	print( sqlDate, cals, pace, dis, heartRate)
+'''
 
 #create submit function
 def submit():
-	testGettingValues()
-	command = "Run"
+	date = b_date.get()
+	#format = '%Y/%m/%d'
+	#print(type(date))
+	sqlDate = datetime.datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
+	
+
+	cals = b_calories.get()
+	pace = b_pace.get()
+	dis = b_distance.get()
+	heartRate = b_heartRate.get()
+
+	command = workoutType.get()
+	#print('this is the command ', command)
 	#try query
-	if command == "but":
+	if command == "Biking":
 		try:
 			connection = get_connection()
 			cursor = connection.cursor()
-			query = """SELECT AVG(Pace) FROM WorkOutData.Running;"""
-			cursor.execute(query)
-			records = cursor.fetchone()
-			print(records)
+			query = """INSERT INTO WorkOutData.Biking(Date, Calories, Pace, Distance, HeartRate)
+			Values(%s, %s, %s, %s, %s)"""
+			data = (sqlDate, cals, pace, dis, heartRate)
+			cursor.execute(query, data)
+			connection.commit()
+			
+			print(cursor.rowcount, "was inserted.")
 
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
