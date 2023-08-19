@@ -2,7 +2,7 @@ from tkinter import *
 import mysql.connector
 from mysql.connector import Error
 import datetime
-
+import biking as Bike
 root = Tk()
 root.title("Work Out Data Tracker")
 root.geometry("450x300")
@@ -41,6 +41,8 @@ def testGettingValues():
 
 #create submit function
 def submit():
+	#Bike.hello()
+	
 	date = b_date.get()
 	#format = '%Y/%m/%d'
 	#print(type(date))
@@ -56,19 +58,11 @@ def submit():
 	#print('this is the command ', command)
 	#try query
 	if command == "Biking":
-		try:
-			connection = get_connection()
-			cursor = connection.cursor()
-			query = """INSERT INTO WorkOutData.Biking(Date, Calories, Pace, Distance, HeartRate)
-			Values(%s, %s, %s, %s, %s)"""
-			data = (sqlDate, cals, pace, dis, heartRate)
-			cursor.execute(query, data)
-			connection.commit()
-			
-			print(cursor.rowcount, "was inserted.")
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
+		Bike.submit(sqlDate, cals, pace, dis, heartRate)
+	else:
+		print('Did not work')
+	
+	'''
 
 	elif command == "Running":
 		try:
@@ -84,11 +78,11 @@ def submit():
 		
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
-		
+
 	else:
 		print("didnt work")
 
-
+	'''
 
 	b_date.delete(0, END)
 	b_calories.delete(0, END)
