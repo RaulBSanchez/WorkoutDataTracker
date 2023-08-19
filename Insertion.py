@@ -13,7 +13,7 @@ def get_connection():
 	connection = mysql.connector.connect (host='localhost',
                                          database='WorkOutData',
                                          user='root',
-                                         password='')
+                                         password='Catfish1030!')
 
 	return connection 
 
@@ -70,7 +70,21 @@ def submit():
 		except(Exception, mysql.connector.Error) as error:
 			print("error", error)
 
-
+	elif command == "Running":
+		try:
+			connection = get_connection()
+			cursor = connection.cursor()
+			query = """INSERT INTO WorkOutData.Running(Date, Calories, Pace, Distance, HeartRate)
+			Values(%s, %s, %s, %s, %s)"""
+			data = (sqlDate, cals, pace, dis, heartRate)
+			cursor.execute(query, data)
+			connection.commit()
+			
+			print(cursor.rowcount, "was inserted.")
+		
+		except(Exception, mysql.connector.Error) as error:
+			print("error", error)
+		
 	else:
 		print("didnt work")
 
