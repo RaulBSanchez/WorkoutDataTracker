@@ -1,7 +1,7 @@
 from tkinter import *
 import mysql.connector
 from mysql.connector import Error
-
+import biking as Bike
 
 root = Tk()
 root.title("Work Out Data Tracker")
@@ -26,7 +26,7 @@ def close_connection(connection):
 
 
 
-
+'''
 def runsql_query(action):
 	#global records
 	command = action
@@ -87,7 +87,11 @@ def runsql_query(action):
 	else:
 		print("sorry")
 
+def test():
+	Bike.bikesql_query()
 
+
+'''
 def bikesql_query(action):
 	#global records
 	command = action
@@ -159,7 +163,7 @@ def run(value):
 	#print(type(action))
 
 	if action == "Calories":
-		runsql_query("Calories")
+		test()
 	elif action == "Sum of Distance":
 		runsql_query("Sum of Distance")
 	elif action == "Pace":
@@ -174,11 +178,19 @@ def bike(value):
 	#print(type(action))
 
 	if action == "Calories":
-		bikesql_query("Calories")
+		cals = Bike.bikesql_query("Calories")
+		entry_bike.delete(0, END)
+		entry_bike.insert(0, cals)
 	elif action == "Sum of Distance":
-		bikesql_query("Sum of Distance")
+		totalMiles = Bike.bikesql_query("Sum of Distance")
+		entry_bike.delete(0, END)
+		entry_bike.insert(0, totalMiles)
+
 	elif action == "Pace":
-		bikesql_query("Pace")
+		#Bike.bikesql_query("Pace")
+		speed = Bike.bikesql_query("Pace")
+		entry_bike.delete(0, END)
+		entry_bike.insert(0, speed)
 
 
 #entries
@@ -205,7 +217,7 @@ option = ["Calories", "Sum of Distance", "Pace"]
 
 dataPoint_run = StringVar()
 dataPoint_run.set(option[0])
-print(dataPoint_run)
+
 
 dataPoint_bike = StringVar()
 dataPoint_bike.set(option[0])
