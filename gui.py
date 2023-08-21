@@ -2,6 +2,7 @@ from tkinter import *
 import mysql.connector
 from mysql.connector import Error
 import biking as Bike
+import running as Run
 
 root = Tk()
 root.title("Work Out Data Tracker")
@@ -9,174 +10,27 @@ root.geometry("400x200")
 
 
 
-
-
-
-def get_connection():
-	connection = mysql.connector.connect (host='localhost',
-                                         database='WorkOutData',
-                                         user='root',
-                                         password='')
-
-	return connection 
-
-def close_connection(connection):
-	if connection:
-		connection.close()
-
-
-
-'''
-def runsql_query(action):
-	#global records
-	command = action
-	if command == "Pace":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT AVG(Pace) FROM WorkOutData.Running;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			speed = str(records[0])
-			entry_speed = speed + " MPH"
-			entry.delete(0, END)
-			entry.insert(0, entry_speed)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	elif command == "Calories":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT SUM(Calories) FROM WorkOutData.Running;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			total_calories = str(records[0])
-			entry_calories = total_calories + " Calories"
-			entry.delete(0, END)
-			entry.insert(0, entry_calories)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	elif command == "Sum of Distance":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT SUM(Distance) FROM WorkOutData.Running;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			distance = str(records[0])
-			entry_distance = distance + " Miles"
-			entry.delete(0, END)
-			entry.insert(0, entry_distance)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	else:
-		print("sorry")
-
-def test():
-	Bike.bikesql_query()
-
-
-'''
-def bikesql_query(action):
-	#global records
-	command = action
-	if command == "Pace":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT AVG(Pace) FROM WorkOutData.Biking;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			speed = str(records[0])
-			entry_speed = speed + " MPH"
-			entry_bike.delete(0, END)
-			entry_bike.insert(0, entry_speed)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	elif command == "Calories":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT SUM(Calories) FROM WorkOutData.Biking;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			total_calories = str(records[0])
-			entry_calories = total_calories + " Calories"
-			entry_bike.delete(0, END)
-			entry_bike.insert(0, entry_calories)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	elif command == "Sum of Distance":
-		try: 
-			connection = get_connection()
-			cursor = connection.cursor()
-			select_query = """SELECT SUM(Distance) FROM WorkOutData.Biking;"""
-			cursor.execute(select_query)
-			records = cursor.fetchone()
-			#print("This is datatype of records", type(records))
-			distance = str(records[0])
-			entry_distance = distance + " Miles"
-			entry_bike.delete(0, END)
-			entry_bike.insert(0, entry_distance)
-			#print(records)
-			
-
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	else:
-		print("sorry")
-
-
-
 def run(value):
-	#entry.delete(0, END)
-	#entry.insert(0, value)
-	#test_connection()
 
 	action = value
-	#print(type(action))
-
+	
 	if action == "Calories":
-		test()
+		cals = Run.runsql_query("Calories")
+		entry.delete(0, END)
+		entry.insert(0, cals)
 	elif action == "Sum of Distance":
-		runsql_query("Sum of Distance")
+		totalMiles = Run.runsql_query("Sum of Distance")
+		entry.delete(0, END)
+		entry.insert(0, totalMiles)
 	elif action == "Pace":
-		runsql_query("Pace")
+		speed = Run.runsql_query("Pace")
+		entry.delete(0, END)
+		entry.insert(0, speed)
 
 def bike(value):
-	#entry.delete(0, END)
-	#entry.insert(0, value)
-	#test_connection()
 
 	action = value
-	#print(type(action))
-
+	
 	if action == "Calories":
 		cals = Bike.bikesql_query("Calories")
 		entry_bike.delete(0, END)

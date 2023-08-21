@@ -3,6 +3,7 @@ import mysql.connector
 from mysql.connector import Error
 import datetime
 import biking as Bike
+import running as Run
 root = Tk()
 root.title("Work Out Data Tracker")
 root.geometry("450x300")
@@ -13,39 +14,20 @@ def get_connection():
 	connection = mysql.connector.connect (host='localhost',
                                          database='WorkOutData',
                                          user='root',
-                                         password='Catfish1030!')
+                                         password='')
 
 	return connection 
 
 def close_connection(connection):
 	if connection:
 		connection.close()
-'''
-def testGettingValues():
-	
-	text = workoutType.get()
-	
-	date = b_date.get()
-	#format = '%Y/%m/%d'
-	#print(type(date))
-	sqlDate = datetime.datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
-	
 
-	cals = b_calories.get()
-	pace = b_pace.get()
-	dis = b_distance.get()
-	heartRate = b_heartRate.get()
-	print("getting values")
-	print( sqlDate, cals, pace, dis, heartRate)
-'''
 
 #create submit function
 def submit():
-	#Bike.hello()
 	
+	# reformat date for sql table
 	date = b_date.get()
-	#format = '%Y/%m/%d'
-	#print(type(date))
 	sqlDate = datetime.datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
 	
 
@@ -59,8 +41,8 @@ def submit():
 	#try query
 	if command == "Biking":
 		Bike.submit(sqlDate, cals, pace, dis, heartRate)
-	else:
-		print('Did not work')
+	elif command =="Running":
+		Run.submit(sqlDate, cals, pace, dis, heartRate)
 	
 	'''
 
