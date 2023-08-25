@@ -27,90 +27,83 @@ def close_connection(connection):
 def submit():
 	
 	# reformat date for sql table
-	date = b_date.get()
+	date = date_entry.get()
 	sqlDate = datetime.datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
 	
 
-	cals = b_calories.get()
-	pace = b_pace.get()
-	dis = b_distance.get()
-	heartRate = b_heartRate.get()
+	cals = calories_entry.get()
+	pace = pace_entry.get()
+	distance = distance_entry.get()
+	heartRate = heartRate_entry.get()
 
 	command = workoutType.get()
+	'''
 	#print('this is the command ', command)
 	#try query
 	if command == "Biking":
-		Bike.submit(sqlDate, cals, pace, dis, heartRate)
+		Bike.submit(sqlDate, cals, pace, distance, heartRate)
 	elif command =="Running":
-		Run.submit(sqlDate, cals, pace, dis, heartRate)
-	
+		Run.submit(sqlDate, cals, pace, distance, heartRate)
 	'''
-
-	elif command == "Running":
-		try:
-			connection = get_connection()
-			cursor = connection.cursor()
-			query = """INSERT INTO WorkOutData.Running(Date, Calories, Pace, Distance, HeartRate)
-			Values(%s, %s, %s, %s, %s)"""
-			data = (sqlDate, cals, pace, dis, heartRate)
-			cursor.execute(query, data)
-			connection.commit()
-			
-			print(cursor.rowcount, "was inserted.")
-		
-		except(Exception, mysql.connector.Error) as error:
-			print("error", error)
-
-	else:
-		print("didnt work")
-
-	'''
-
-	b_date.delete(0, END)
-	b_calories.delete(0, END)
-	b_pace.delete(0, END)
-	b_distance.delete(0, END)
-	b_heartRate.delete(0, END)
+	print(sqlDate, cals, pace, distance, heartRate)
+	date_entry.delete(0, END)
+	calories_entry.delete(0, END)
+	pace_entry.delete(0, END)
+	distance_entry.delete(0, END)
+	heartRate_entry.delete(0, END)
 
 
 
 
 # text boxes
-b_date = Entry(root, width = 30)
-b_date.grid(row = 0, column = 1, padx = 20)
+date_entry = Entry(root, width = 30)
+date_entry.grid(row = 0, column = 1, padx = 20)
 
-b_calories = Entry(root, width = 30)
-b_calories.grid(row = 1, column = 1)
+calories_entry = Entry(root, width = 30)
+calories_entry.grid(row = 1, column = 1)
 
-b_pace = Entry(root, width = 30)
-b_pace.grid(row = 2, column = 1)
+pace_entry = Entry(root, width = 30)
+pace_entry.grid(row = 2, column = 1)
 
-b_distance = Entry(root, width = 30)
-b_distance.grid(row = 3, column = 1)
+distance_entry = Entry(root, width = 30)
+distance_entry.grid(row = 3, column = 1)
 
-b_heartRate = Entry(root, width = 30)
-b_heartRate.grid(row = 4, column = 1)
+heartRate_entry = Entry(root, width = 30)
+heartRate_entry.grid(row = 4, column = 1)
+
+workoutTime_entry = Entry(root, width = 30)
+workoutTime_entry.grid(row=5, column=1)
+
+elevation_entry = Entry(root, width=30)
+elevation_entry.grid(row=6, column=1)
 
 # text box labels
-b_date_label = Label(root, text= "Date", anchor = "e")
-b_date_label.grid(row = 0, column = 0)
+date_label = Label(root, text= "Date", anchor = "e")
+date_label.grid(row = 0, column = 0)
 
-b_calories_label = Label(root, text = "Calories", anchor = "e")
-b_calories_label.grid(row = 1, column = 0)
+calories_label = Label(root, text = "Calories", anchor = "e")
+calories_label.grid(row = 1, column = 0)
 
-b_pace_label = Label(root, text ="Pace", anchor = "e")
-b_pace_label.grid(row = 2, column = 0)
+pace_label = Label(root, text ="Pace", anchor = "e")
+pace_label.grid(row = 2, column = 0)
 
-b_distance_label = Label(root, text = "Distance", anchor = "e")
-b_distance_label.grid(row = 3, column = 0)
+distance_label = Label(root, text = "Distance", anchor = "e")
+distance_label.grid(row = 3, column = 0)
 
-b_hearRate_label = Label(root, text = "Heart Rate", anchor = "e")
-b_hearRate_label.grid(row = 4, column = 0)
+hearRate_label = Label(root, text = "Heart Rate", anchor = "e")
+hearRate_label.grid(row = 4, column = 0)
+
+workoutTime_label = Label(root, text = "Length of workout", anchor = "e")
+workoutTime_label.grid(row=5, column = 0)
+
+elevation_label = Label(root, text = "Elevation", anchor = "e")
+elevation_label.grid(row=6, column = 0)
+
 
 # create submit button
 
 submit_button = Button(root, text = "Add Workout", command =submit)
-submit_button.grid(row = 6, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
+submit_button.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
 
 
 #dropdown button
@@ -119,7 +112,7 @@ workoutType = StringVar()
 workoutType.set(option[0])
 
 dropdown = OptionMenu(root, workoutType, *option)
-dropdown.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
+dropdown.grid(row = 8, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx=100)
 
 
 root.mainloop()
